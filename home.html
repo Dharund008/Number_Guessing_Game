@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess The Number</title>
+</head>
+
+<body>
+    <center>
+        <b>
+            <h1><em>Number Guessing Game</em></h1>
+        </b>
+    </center>
+    
+        <fieldset>
+            <legend><b>Let's Play the Game </b></legend>
+
+            <p>You are required to give a random number from 1 to 100 for the right guess. See if you can guess it in
+                6 turns or fewer.
+                According to your choices, you will be given whether your
+                choice is low or high. So based on that, you can give again the right guess until you are correctly
+                guessing it.
+            </p>
+            <br>
+            <b>Rules to Know:-</b>
+            <ul>
+                <li>You are required to give a random number from 1 to 100.</li>
+                <li>You have to find the correct guess in 6 turns or fewer.</li>
+            </ul>
+
+            <br>
+            <label for="choice">Enter Your Choice:-</label>
+            <input type="number" id="choice">
+            <button id="sub" onclick="onGuess()">Submit Guess</button>
+            <br>
+            <h4 id="prev">Previous Guesses:-</h4>  
+            <div id="res"></div>
+            <div id="alert"></div>
+            <br>
+            <button id="reset" onclick="onReset()">Start A New Game</button>
+
+            <br>
+            <marquee behaviour="scroll" style="color: blue;"><em>Enjoy the Game!...</em></marquee>
+        </fieldset>
+     
+    <script>
+        let turns=6;
+        // let target=23;
+        let target;
+        function randomgenerate() {
+                var number = (Math.floor(Math.random() * (101)));
+                if (number == 0) {
+                    number = 1;
+                }
+                //return number;
+                console.log(number);
+                return number;
+            }
+            //randomgenerate();
+        target= randomgenerate();
+
+        function startNewGame() {
+            turns = 6;
+            document.getElementById('prev').innerHTML = 'Previous Guesses:-';
+            document.getElementById('res').innerHTML = '';
+            document.getElementById('alert').innerHTML= '';
+            document.getElementById('choice').disabled = false;
+        }
+
+        function onGuess() {
+
+            let userGuess = parseInt(document.getElementById('choice').value);
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                alert('Choose the number from 1 to 100 only!');
+                return;
+            } else {
+                document.getElementById('prev').innerHTML += userGuess+" ";
+                document.getElementById('alert').style.display="block";
+                document.getElementById('res').style.display="block";
+            }
+
+            turns--;
+
+            if (userGuess == target) {
+                document.getElementById('alert').innerHTML = "Correct Guess!";
+                document.getElementById('res').innerHTML = "Congratulations!!..You have got the right Guess!!";
+                document.getElementById('alert').style.background = "green";
+                document.getElementById('choice').disabled=true;
+            } else {
+                if (userGuess < target) {
+                    document.getElementById('alert').innerHTML = "Wrong Guess!";
+                    document.getElementById('res').innerHTML = "Your choice is Low!!.."; 
+                    document.getElementById('alert').style.background = "red";
+                } else if (userGuess > target) {
+                    document.getElementById('alert').innerHTML = "Wrong Guess!";
+                    document.getElementById('res').innerHTML = "Your choice is High!!..";  
+                    document.getElementById('alert').style.background = "red";             
+                }
+                if (turns == 0) {
+                    alert(`Sorry!!..You are out of turns. The correct number is ${target}`);
+                    startNewGame();
+                }
+            }
+        }
+
+        function onReset() {
+            startNewGame();
+        }
+        startNewGame();
+    </script>
+</body>
+
+</html>
